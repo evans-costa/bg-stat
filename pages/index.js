@@ -1,54 +1,66 @@
 import Layout from "../components/layout";
 import { useEffect, useState } from "react";
+import TableRow from "../components/TableRow/tableRow";
+import AddButton from "../components/AddButton/addButton";
+import Modal from "../components/Modal/modal";
 
 export default function Page() {
-  const [bgInfo, setBgInfo] = useState([]);
+  const [rowsData, setRowsData] = useState([]);
+  const [modalIsOpen, setModalIsOpen] = useState(false);
 
   useEffect(() => {
     const getData = async () => {
-      const query = await fetch(
-        "https://www.boardgamegeek.com/xmlapi2/thing?id=013",
-      );
-      const response = await query.text();
-      let parser = new DOMParser();
-      let xml = parser.parseFromString(response, "application/xml");
+      try {
+        const query = await fetch(
+          "https://www.boardgamegeek.com/xmlapi2/thing?id=320",
+        );
+        const response = await query.text();
+        let parser = new DOMParser();
+        let xml = parser.parseFromString(response, "application/xml");
 
-      const name = xml.getElementsByTagName("name")[1].getAttribute("value");
-      const image = xml.getElementsByTagName("image")[0].textContent;
+        const rows = {
+          name: xml.getElementsByTagName("name")[1].getAttribute("value"),
+          image: xml.getElementsByTagName("image")[0].textContent,
+        };
 
-      setBgInfo({ name, image });
+        setRowsData([...rowsData, rows]);
+      } catch (error) {
+        console.error("Erro ao buscar dados:", error);
+      }
     };
     getData();
   }, []);
 
   return (
     <Layout>
-      <table className="table-auto">
-        <thead>
+      <AddButton
+        openModal={() => {
+          setModalIsOpen(true);
+        }}
+      />
+      {modalIsOpen ? (
+        <Modal
+          onClick={() => {
+            setModalIsOpen(false);
+          }}
+        />
+      ) : null}
+      <table className="table-auto min-w-full text-left text-sm font-light">
+        <thead className="border-b font-medium dark:border-neutral-500">
           <tr>
-            <th>Imagem (BGG Link)</th>
-            <th>Nome do Jogo</th>
-            <th>Preço de aquisição</th>
+            <th scope="col" className="px-6 py-4">
+              Imagem (BGG Link)
+            </th>
+            <th scope="col" className="px-6 py-4">
+              Nome do Jogo
+            </th>
+            <th scope="col" className="px-6 py-4">
+              Preço de aquisição
+            </th>
           </tr>
         </thead>
         <tbody>
-          <tr>
-            <td>
-              {bgInfo.image ? <img src={bgInfo.image} alt="Imagem" /> : null}
-            </td>
-            {bgInfo.name ? <td>{bgInfo.name}</td> : null}
-            <td>1961</td>
-          </tr>
-          <tr>
-            <td>Witchy Woman</td>
-            <td>The Eagles</td>
-            <td>1972</td>
-          </tr>
-          <tr>
-            <td>Shining Star</td>
-            <td>Earth, Wind, and Fire</td>
-            <td>1975</td>
-          </tr>
+          <TableRow rowsData={rowsData} />
         </tbody>
       </table>
     </Layout>
