@@ -1,7 +1,13 @@
-export default function SearchList({ searchResults }) {
+export default function SearchList({ children, isActive = false }) {
   return (
-    <div className="w-full bg-gray-600 flex flex-col rounded-lg mt-4 max-h-80 overflow-y-auto">
-      {searchResults}
-    </div>
+    <>
+      {isActive ? (
+        <div className="w-full bg-gray-600 flex flex-col rounded-lg mt-4 max-h-80 overflow-y-auto">
+          {children}
+        </div>
+      ) : (
+        <div>Faça sua busca</div>
+      )}
+    </>
   );
 }
