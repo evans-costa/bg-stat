@@ -1,3 +1,5 @@
+import { PlusIcon } from "@heroicons/react/20/solid";
+
 export default function AddButton({ openModal }) {
   return (
     <div className="flex flex-row-reverse my-6">
@@ -6,18 +8,7 @@ export default function AddButton({ openModal }) {
         className="rounded-full text-sm px-3 py-3 items-center bg-gray-700 text-white"
         onClick={openModal}
       >
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 24 24"
-          fill="currentColor"
-          className="w-6 h-6"
-        >
-          <path
-            fillRule="evenodd"
-            d="M12 3.75a.75.75 0 01.75.75v6.75h6.75a.75.75 0 010 1.5h-6.75v6.75a.75.75 0 01-1.5 0v-6.75H4.5a.75.75 0 010-1.5h6.75V4.5a.75.75 0 01.75-.75z"
-            clipRule="evenodd"
-          />
-        </svg>
+        <PlusIcon className="h-6 w-6" />
       </button>
     </div>
   );
