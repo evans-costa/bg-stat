@@ -1,12 +1,14 @@
 import Head from "next/head";
 import { useEffect, useState } from "react";
 
-import Layout from "../components/layout";
-import TableRow from "../components/TableRow/tableRow";
-import AddButton from "../components/AddButton/addButton";
-import Modal from "../components/Modal/modal";
+import { PlusIcon } from "@heroicons/react/20/solid" 
 
-export default function Page() {
+import Layout from "../interface/components/layout"
+import TableRow from "../interface/components/TableRow";
+import Button from "../interface/components/Button";
+import Modal from "../interface/components/Modal"
+
+export default function Home() {
   const [rowsData, setRowsData] = useState([]);
   const [modalIsOpen, setModalIsOpen] = useState(false);
 
@@ -14,7 +16,7 @@ export default function Page() {
     const getData = async () => {
       try {
         const query = await fetch(
-          "https://www.boardgamegeek.com/xmlapi2/thing?id=320",
+          "https://boardgamegeek.com/xmlapi2/thing?id=320",
         );
         const response = await query.text();
         let parser = new DOMParser();
@@ -40,11 +42,14 @@ export default function Page() {
         <meta charSet="utf-8" />
         <meta name="viewport" content="initial-scale=1.0, width=device-width" />
       </Head>
-      <AddButton
-        openModal={() => {
-          setModalIsOpen(true);
-        }}
-      />
+      <div className="flex flex-row-reverse mb-4">
+        <Button
+          onClick={() => {
+            setModalIsOpen(true);
+          }}
+          icon={<PlusIcon className="h-6 w-6" />}
+        />
+      </div>
       {modalIsOpen ? (
         <Modal
           onClick={() => {
