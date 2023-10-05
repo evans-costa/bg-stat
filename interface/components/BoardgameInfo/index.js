@@ -103,7 +103,7 @@ export default function BoardgameInfo({ itemId }) {
             htmlFor="price"
             className="block text-base font-medium text-slate-300 leading-6"
           >
-            Price
+            Purchase price
           </label>
           <div className="rounded-md h-10 relative bg-gray-600">
             <div className="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
