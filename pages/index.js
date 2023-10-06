@@ -1,35 +1,11 @@
 import Head from "next/head";
-import { useEffect, useState } from "react";
+
+import data from "../_data/boardgames.json";
 
 import Layout from "../interface/components/layout";
 import TableRow from "../interface/components/TableRow";
 
 export default function Home() {
-  const [rowsData, setRowsData] = useState([]);
-
-  useEffect(() => {
-    const getData = async () => {
-      try {
-        const query = await fetch(
-          "https://boardgamegeek.com/xmlapi2/thing?id=320",
-        );
-        const response = await query.text();
-        let parser = new DOMParser();
-        let xml = parser.parseFromString(response, "application/xml");
-
-        const rows = {
-          name: xml.getElementsByTagName("name")[1].getAttribute("value"),
-          image: xml.getElementsByTagName("image")[0].textContent,
-        };
-
-        setRowsData([...rowsData, rows]);
-      } catch (error) {
-        console.error("Erro ao buscar dados:", error);
-      }
-    };
-    getData();
-  }, []);
-
   return (
     <Layout>
       <Head>
@@ -53,7 +29,7 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <TableRow rowsData={rowsData} />
+            <TableRow rowsData={data.boardgames} />
           </tbody>
         </table>
       </div>
