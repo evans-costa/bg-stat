@@ -13,6 +13,7 @@ export default function BoardgameInfo({ itemId }) {
   const [data, setData] = useState(null);
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [success, setSuccess] = useState(null);
 
   async function handleSubmit(event) {
     event.preventDefault();
@@ -37,8 +38,14 @@ export default function BoardgameInfo({ itemId }) {
         throw new Error("Data submission failed! Please try again.");
       }
 
+      const responseBody = await response.json();
+
       if (response.status === 201) {
-        router.push("/");
+        setSuccess(responseBody.message);
+
+        setTimeout(() => {
+          router.push("/");
+        }, 2000);
       }
     } catch (error) {
       setError(error.message);
@@ -67,6 +74,7 @@ export default function BoardgameInfo({ itemId }) {
 
   return (
     <section className="flex flex-col items-center">
+      {success ? <div className="text-green-300">{success}</div> : null}
       {error ? <ErrorMessage message={error} /> : null}
       <form
         onSubmit={handleSubmit}
