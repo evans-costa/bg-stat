@@ -6,7 +6,7 @@ import { PlusIcon } from "@heroicons/react/20/solid";
 export default function Header() {
   return (
     <header>
-      <nav className="bg-gray-800 px-4 py-2.5">
+      <nav className="bg-gray-900 px-4 py-2.5">
         <div className="flex flex-wrap justify-between items-center mx-auto">
           <Link className="flex items-center gap-2" href="/">
             <Image
