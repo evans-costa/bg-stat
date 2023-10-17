@@ -5,6 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "next dev",
+    "services:up": "docker compose -f ./infra/compose.yaml up -d",
+    "migration:run": "node -r dotenv-expand/config infra/scripts/db-connection.js && node-pg-migrate up --envPath ./.env -m infra/migrations",
+    "migration:create": "node-pg-migrate --migrations-dir ./infra/migrations create",
     "lint:check": "prettier --check .",
     "lint:fix": "prettier --write ."
   },
@@ -13,7 +16,12 @@
   "license": "MIT",
   "dependencies": {
     "@heroicons/react": "^2.0.18",
+    "bcrypt": "^5.1.1",
+    "dotenv": "^16.3.1",
+    "dotenv-expand": "^10.0.0",
     "next": "^13.4.19",
+    "node-pg-migrate": "^6.2.2",
+    "pg": "^8.11.3",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
