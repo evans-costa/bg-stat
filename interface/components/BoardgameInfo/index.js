@@ -28,7 +28,7 @@ export default function BoardgameInfo({ itemId }) {
     };
 
     try {
-      const response = await fetch("/api/submit", {
+      const response = await fetch("/api/boardgames", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(receivedData),
