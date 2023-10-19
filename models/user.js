@@ -1,9 +1,13 @@
 import * as database from "../infra/database.js";
 import bcrypt from "bcrypt";
+import { AppError } from "../errors";
 
 export async function create(userData) {
   if (!userData.email || !userData.password || !userData.username) {
-    throw new Error("Fill all the inputs!");
+    throw new AppError({
+      message: "Fill all the inputs!",
+      statusCode: 400,
+    });
   }
 
   const queryValidateEmail = {
@@ -14,7 +18,10 @@ export async function create(userData) {
   const resultValidateEmail = await database.query(queryValidateEmail);
 
   if (resultValidateEmail.rowCount > 0) {
-    throw new Error("This email is already registered!");
+    throw new AppError({
+      message: "This email is already registered!",
+      statusCode: 400,
+    });
   }
 
   const queryValidateUsername = {
@@ -25,7 +32,10 @@ export async function create(userData) {
   const resultValidateUsername = await database.query(queryValidateUsername);
 
   if (resultValidateUsername.rowCount > 0) {
-    throw new Error("This username is already registered!");
+    throw new AppError({
+      message: "This username is already registered!",
+      statusCode: 400,
+    });
   }
 
   const hashedPassword = await bcrypt.hash(userData.password, 10);
