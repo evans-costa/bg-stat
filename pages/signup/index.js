@@ -3,7 +3,7 @@ import Layout from "../../interface/components/layout";
 import ErrorMessage from "../../interface/components/ErrorMessage";
 import LoadingSpin from "../../interface/components/LoadingSpin";
 import { useRef, useState } from "react";
-import { Router, useRouter } from "next/router";
+import { useRouter } from "next/router";
 
 export default function SignUp() {
   const router = useRouter();
@@ -14,7 +14,6 @@ export default function SignUp() {
 
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
-  const [success, setSuccess] = useState(null);
 
   function clearErrors() {
     setError(null);
@@ -46,7 +45,7 @@ export default function SignUp() {
       const responseBody = await response.json();
 
       if (response.status === 201) {
-        router.push("/boardgames");
+        router.push("/");
         return;
       }
 
@@ -66,7 +65,6 @@ export default function SignUp() {
   return (
     <Layout>
       <section className="flex flex-col items-center justify-center mt-16 mx-auto">
-        {success ? <div className="text-green-300">{success}</div> : null}
         {error ? <ErrorMessage message={error.message} /> : null}
         <div className="w-full max-w-lg bg-gray-900 border-gray-700 rounded-lg">
           <div className="py-8 px-6">
