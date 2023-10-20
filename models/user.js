@@ -25,7 +25,7 @@ export async function create(userData) {
   }
 
   const queryValidateUsername = {
-    text: `SELECT username from users WHERE username = $1;`,
+    text: `SELECT username FROM users WHERE username = $1;`,
     values: [userData.username],
   };
 
@@ -49,4 +49,22 @@ export async function create(userData) {
   const newUser = resultUserCreated.rows[0];
 
   return newUser;
+}
+
+export async function findByEmail(userEmail) {
+  const queryFindEmail = {
+    text: `SELECT * FROM users WHERE email = $1;`,
+    values: [userEmail],
+  };
+
+  const result = await database.query(queryFindEmail);
+
+  if (result.rowCount === 0) {
+    throw new AppError({
+      message: "This email not exists in our database",
+      statusCode: 400,
+    });
+  }
+
+  return result.rows[0];
 }
