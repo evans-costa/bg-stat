@@ -120,10 +120,9 @@ export default function Home() {
                 </button>
                 <p className="text-base text-gray-300">
                   Don't have an account yet?{" "}
-                  <Link
-                    className="text-blue-500 font-semibold"
-                    href="/signup"
-                  ></Link>
+                  <Link className="text-blue-500 font-semibold" href="/signup">
+                    Sign up
+                  </Link>
                 </p>
               </div>
             </form>
