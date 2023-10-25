@@ -10,16 +10,18 @@ const configurations = {
 
 async function getClient() {
   const client = new pg.Pool(configurations);
-  await client.connect();
-  return client;
+  return await client.connect();
 }
 
 export async function query(query) {
+  let client;
+
   try {
-    const client = await getClient();
-    const results = await client.query(query);
-    return results;
+    client = await getClient();
+    return await client.query(query);
   } catch (error) {
     console.error("Error while receive query: ", error);
+  } finally {
+    client.release();
   }
 }
