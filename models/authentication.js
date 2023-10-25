@@ -1,11 +1,15 @@
 import { AppError } from "../errors";
+import session from "./sessions.js";
 import jwt from "jsonwebtoken";
 import cookie from "cookie";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import "dotenv/config";
 
 export async function comparePassword(userPasswordInput, passwordHash) {
-  const passwordMatches = await bcrypt.compare(userPasswordInput, passwordHash);
+  const passwordMatches = await bcryptjs.compare(
+    userPasswordInput,
+    passwordHash,
+  );
 
   if (!passwordMatches) {
     throw new AppError({
@@ -35,4 +39,40 @@ function setAuthCookie(authToken, response) {
       path: "/",
     }),
   ]);
+}
+
+export function findValidAccessCookie(request, next) {
+  const accessToken = request.headers["authorization"]?.split(" ") || [
+    " ",
+    " ",
+  ];
+
+  if (!accessToken) {
+    throw new AppError({
+      message: "There are no access token on cookies",
+      statusCode: 401,
+    });
+  }
+
+  try {
+    const payload = jwt.verify(accessToken, process.env.JWT_SECRET);
+    const userIdFromToken = typeof payload !== "string" && payload.id;
+
+    if (!userIdFromToken) {
+      throw new AppError({
+        message: "The token provided is invalid",
+        statusCode: 401,
+      });
+    }
+
+    return next();
+  } catch (error) {
+    return error;
+  }
+}
+
+export async function createSessionAndAccessToken(userId, response) {
+  const refreshToken = await session.createRefreshToken(userId);
+  createAccessToken(userId, response);
+  return refreshToken;
 }
