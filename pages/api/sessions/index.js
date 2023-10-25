@@ -1,6 +1,5 @@
 import * as User from "../../../models/user.js";
 import * as Authentication from "../../../models/authentication.js";
-import { AppError } from "../../../errors/index.js";
 
 export default async function postHandler(request, response) {
   if (request.method === "POST") {
@@ -10,6 +9,7 @@ export default async function postHandler(request, response) {
       const data = request.body;
 
       userLogin = await User.findByEmail(data.email);
+
       await Authentication.comparePassword(data.password, userLogin.password);
     } catch (error) {
       if (error) {
@@ -19,7 +19,8 @@ export default async function postHandler(request, response) {
       }
     }
 
-    Authentication.createAccessToken(userLogin.id, response);
+    await Authentication.createSessionAndAccessToken(userLogin.id, response);
+
     return response.status(201).json({ message: "Login successfully!" });
   } else {
     return response.status(405).end();
