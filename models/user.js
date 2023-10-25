@@ -1,5 +1,5 @@
 import * as database from "../infra/database.js";
-import bcrypt from "bcrypt";
+import bcryptjs from "bcryptjs";
 import { AppError } from "../errors";
 
 export async function create(userData) {
@@ -38,7 +38,7 @@ export async function create(userData) {
     });
   }
 
-  const hashedPassword = await bcrypt.hash(userData.password, 10);
+  const hashedPassword = await bcryptjs.hash(userData.password, 10);
 
   const insertUserQuery = {
     text: `INSERT INTO users (username, email, password) VALUES ($1, $2, $3) RETURNING *;`,
