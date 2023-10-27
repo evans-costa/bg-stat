@@ -68,3 +68,21 @@ export async function findByEmail(userEmail) {
 
   return result.rows[0];
 }
+
+export async function findById(userId) {
+  const queryFindId = {
+    text: `SELECT * FROM users WHERE id = $1 LIMIT 1;`,
+    values: [userId],
+  };
+
+  const result = await database.query(queryFindId);
+
+  if (result.rowCount === 0) {
+    throw new AppError({
+      message: "This user not exists in our database",
+      statusCode: 400,
+    });
+  }
+
+  return result.rows[0];
+}
