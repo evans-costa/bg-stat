@@ -1,9 +1,20 @@
-import data from "../../_data/boardgames.json";
-
-import Layout from "../../interface/components/layout";
-import TableRow from "../../interface/components/TableRow";
+import data from '../../_data/boardgames.json';
+import useUser from '../../interface/hooks/useUser.js';
+import Layout from '../../interface/components/layout';
+import TableRow from '../../interface/components/TableRow';
+import { useRouter } from 'next/router';
+import { useEffect } from 'react';
 
 export default function Boardgames({ allBoardgameData }) {
+  const router = useRouter();
+  const { user } = useUser();
+
+  useEffect(() => {
+    if (router && !user) {
+      router.push('/');
+    }
+  }, [user, router]);
+
   return (
     <Layout>
       <div className="w-full flex items-center justify-center mt-12">

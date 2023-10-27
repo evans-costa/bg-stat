@@ -1,5 +1,7 @@
 import { useState, useEffect } from "react";
+import { useRouter } from "next/router.js";
 import useDebounce from "../../interface/hooks/useDebounce.js";
+import useUser from "../../interface/hooks/useUser.js";
 
 import { searchGameData } from "../../interface/utils/searchGameData.js";
 
@@ -17,13 +19,22 @@ export default function Add() {
   const [keyword, setKeyword] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
+
   const debouncedInput = useDebounce({ value: keyword, delay: 1000 });
+  const { user } = useUser();
+  const router = useRouter();
 
   function handleClick(itemId) {
     setItemId(itemId);
     setKeyword("");
     setResults([]);
   }
+
+  useEffect(() => {
+    if (router && !user) {
+      router.push("/");
+    }
+  }, [user, router]);
 
   useEffect(() => {
     const controller = new AbortController();

@@ -1,12 +1,15 @@
 import { useState, useRef } from "react";
-import Layout from "../interface/components/layout";
+
 import Link from "next/link";
-import { useRouter } from "next/router";
+import Layout from "../interface/components/layout";
 import LoadingSpin from "../interface/components/LoadingSpin";
 import ErrorMessage from "../interface/components/ErrorMessage";
 
+import useUser from "./../interface/hooks/useUser.js";
+
 export default function Home() {
-  const router = useRouter();
+  const { authUser } = useUser();
+
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
 
@@ -41,7 +44,7 @@ export default function Home() {
       const responseBody = await response.json();
 
       if (response.status === 201) {
-        router.push("/boardgames");
+        authUser();
         return;
       }
 
