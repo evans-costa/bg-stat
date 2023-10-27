@@ -3,3 +3,4 @@ root = true
 [*]
 indend_style = space
 indent_size = 2
+quote_type = single
