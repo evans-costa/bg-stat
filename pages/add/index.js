@@ -1,40 +1,30 @@
-import { useState, useEffect } from "react";
-import { useRouter } from "next/router.js";
-import useDebounce from "../../interface/hooks/useDebounce.js";
-import useUser from "../../interface/hooks/useUser.js";
+import { useState, useEffect } from 'react';
+import useDebounce from '../../interface/hooks/useDebounce.js';
 
-import { searchGameData } from "../../interface/utils/searchGameData.js";
+import { searchGameData } from '../../interface/utils/searchGameData.js';
 
-import Layout from "../../interface/components/layout.js";
-import SearchBar from "../../interface/components/SearchBar";
-import SearchList from "../../interface/components/SearchList";
-import BoardgameInfo from "../../interface/components/BoardgameInfo";
-import SearchItem from "../../interface/components/SearchItem";
-import ErrorMessage from "../../interface/components/ErrorMessage";
-import LoadingSpin from "../../interface/components/LoadingSpin";
+import Layout from '../../interface/components/layout.js';
+import SearchBar from '../../interface/components/SearchBar';
+import SearchList from '../../interface/components/SearchList';
+import BoardgameInfo from '../../interface/components/BoardgameInfo';
+import SearchItem from '../../interface/components/SearchItem';
+import ErrorMessage from '../../interface/components/ErrorMessage';
+import LoadingSpin from '../../interface/components/LoadingSpin';
 
 export default function Add() {
   const [results, setResults] = useState([]);
   const [itemId, setItemId] = useState(null);
-  const [keyword, setKeyword] = useState("");
+  const [keyword, setKeyword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState(null);
 
   const debouncedInput = useDebounce({ value: keyword, delay: 1000 });
-  const { user } = useUser();
-  const router = useRouter();
 
   function handleClick(itemId) {
     setItemId(itemId);
-    setKeyword("");
+    setKeyword('');
     setResults([]);
   }
-
-  useEffect(() => {
-    if (router && !user) {
-      router.push("/");
-    }
-  }, [user, router]);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -48,7 +38,7 @@ export default function Add() {
         const searchResult = await searchGameData(debouncedInput, controller);
         setResults(searchResult);
       } catch (error) {
-        setError("An error ocurred while fetching data.");
+        setError('An error ocurred while fetching data.');
         setResults([]);
       } finally {
         setIsLoading(false);

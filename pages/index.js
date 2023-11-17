@@ -1,14 +1,14 @@
-import { useState, useRef } from "react";
+import { useState, useRef } from 'react';
 
-import Link from "next/link";
-import Layout from "../interface/components/layout";
-import LoadingSpin from "../interface/components/LoadingSpin";
-import ErrorMessage from "../interface/components/ErrorMessage";
+import Link from 'next/link';
+import Layout from '../interface/components/layout';
+import LoadingSpin from '../interface/components/LoadingSpin';
+import ErrorMessage from '../interface/components/ErrorMessage';
 
-import useUser from "./../interface/hooks/useUser.js";
+import useUser from './../interface/hooks/useUser.js';
 
 export default function Home() {
-  const { authUser } = useUser();
+  const { fetchUser } = useUser();
 
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -30,10 +30,10 @@ export default function Home() {
     setError(null);
 
     try {
-      const response = await fetch("/api/sessions", {
-        method: "POST",
+      const response = await fetch('/api/sessions', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           email: email,
@@ -44,7 +44,7 @@ export default function Home() {
       const responseBody = await response.json();
 
       if (response.status === 201) {
-        authUser();
+        fetchUser();
         return;
       }
 
@@ -54,7 +54,7 @@ export default function Home() {
         return;
       }
     } catch (error) {
-      setError("It is not possible to login, please try again.");
+      setError('It is not possible to login, please try again.');
       setIsLoading(false);
     } finally {
       setIsLoading(false);
@@ -119,10 +119,10 @@ export default function Home() {
                   type="submit"
                   className="w-full my-4 rounded-lg p-2.5 bg-blue-700 text-base font-medium text-slate-50"
                 >
-                  {isLoading ? <LoadingSpin /> : "Sign in"}
+                  {isLoading ? <LoadingSpin /> : 'Sign in'}
                 </button>
                 <p className="text-base text-gray-300">
-                  Don't have an account yet?{" "}
+                  Don't have an account yet?{' '}
                   <Link className="text-blue-500 font-semibold" href="/signup">
                     Sign up
                   </Link>

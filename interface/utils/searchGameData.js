@@ -7,17 +7,17 @@ export async function searchGameData(keyword, controller) {
     const response = await query.text();
 
     let parser = new DOMParser();
-    let xml = parser.parseFromString(response, "text/xml");
+    let xml = parser.parseFromString(response, 'text/xml');
 
-    const itemElements = xml.getElementsByTagName("item");
+    const itemElements = xml.getElementsByTagName('item');
 
     const filteredResults = Array.from(itemElements).map((itemElement) => {
-      const nameElement = itemElement.getElementsByTagName("name")[0];
-      const name = nameElement.getAttribute("value");
-      const id = itemElement.getAttribute("id");
+      const nameElement = itemElement.getElementsByTagName('name')[0];
+      const name = nameElement.getAttribute('value');
+      const id = itemElement.getAttribute('id');
       const yearPublished =
-        itemElement.getElementsByTagName("yearpublished")[0];
-      const year = yearPublished ? yearPublished.getAttribute("value") : null;
+        itemElement.getElementsByTagName('yearpublished')[0];
+      const year = yearPublished ? yearPublished.getAttribute('value') : null;
 
       const boardgameResult = {
         name: name,
@@ -30,7 +30,7 @@ export async function searchGameData(keyword, controller) {
 
     return filteredResults;
   } catch (error) {
-    console.error("Error while search data.");
+    console.error('Error while search data.');
     throw error;
   }
 }
