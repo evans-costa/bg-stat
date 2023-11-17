@@ -1,11 +1,11 @@
-import * as database from "../infra/database.js";
-import bcryptjs from "bcryptjs";
-import { AppError } from "../errors";
+import * as database from '../infra/database.js';
+import bcryptjs from 'bcryptjs';
+import { AppError } from '../errors';
 
 export async function create(userData) {
   if (!userData.email || !userData.password || !userData.username) {
     throw new AppError({
-      message: "Fill all the inputs!",
+      message: 'Fill all the inputs!',
       statusCode: 400,
     });
   }
@@ -19,7 +19,7 @@ export async function create(userData) {
 
   if (resultValidateEmail.rowCount > 0) {
     throw new AppError({
-      message: "This email is already registered!",
+      message: 'This email is already registered!',
       statusCode: 400,
     });
   }
@@ -33,7 +33,7 @@ export async function create(userData) {
 
   if (resultValidateUsername.rowCount > 0) {
     throw new AppError({
-      message: "This username is already registered!",
+      message: 'This username is already registered!',
       statusCode: 400,
     });
   }
@@ -61,7 +61,7 @@ export async function findByEmail(userEmail) {
 
   if (result.rowCount === 0) {
     throw new AppError({
-      message: "This email not exists in our database",
+      message: 'This email not exists in our database',
       statusCode: 400,
     });
   }
@@ -71,7 +71,7 @@ export async function findByEmail(userEmail) {
 
 export async function findById(userId) {
   const queryFindId = {
-    text: `SELECT * FROM users WHERE id = $1 LIMIT 1;`,
+    text: `SELECT id, username, email, created_at, updated_at FROM users WHERE id = $1 LIMIT 1;`,
     values: [userId],
   };
 
@@ -79,7 +79,7 @@ export async function findById(userId) {
 
   if (result.rowCount === 0) {
     throw new AppError({
-      message: "This user not exists in our database",
+      message: 'This user not exists in our database',
       statusCode: 400,
     });
   }
