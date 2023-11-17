@@ -1,19 +1,20 @@
 import data from '../../_data/boardgames.json';
-import useUser from '../../interface/hooks/useUser.js';
 import Layout from '../../interface/components/layout';
 import TableRow from '../../interface/components/TableRow';
+
+import useUser from '../../interface/hooks/useUser';
 import { useRouter } from 'next/router';
 import { useEffect } from 'react';
 
 export default function Boardgames({ allBoardgameData }) {
-  const router = useRouter();
   const { user } = useUser();
+  const router = useRouter();
 
   useEffect(() => {
-    if (router && !user) {
+    if (!user) {
       router.push('/');
     }
-  }, [user, router]);
+  }, [router, user]);
 
   return (
     <Layout>
