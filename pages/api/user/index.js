@@ -1,22 +1,18 @@
 import * as User from '../../../models/user.js';
-import * as Session from '../../../models/sessions.js';
-
+import * as Token from '../../../models/token.js';
 import { AppError } from '../../../errors/index.js';
-import 'dotenv/config';
 
 export default async function getHandler(request, response) {
   if (request.method === 'GET') {
     try {
-      const getUserByCookie = Session.findTokenAndValidateOnSession(request);
-
-      const user = await User.findById(getUserByCookie.id);
+      const accessToken = Token.getTokenByCookie(request)
+      const decodedToken = await Token.verifyTokenOnCookies(accessToken)
+      const user = await User.findById(decodedToken.id);
 
       return response.status(200).json(user);
     } catch (error) {
       if (error instanceof AppError) {
-        response.status(401).json({ message: error.message });
-      } else {
-        response.status(401).json({ message: 'User is not authenticated.' });
+        return response.status(401).json({ message: "This user cannot access this resource." });
       }
     }
   } else {
