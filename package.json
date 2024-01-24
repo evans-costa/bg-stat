@@ -7,7 +7,7 @@
     "dev": "kill-port 3000 && npm run services:up && npm run next",
     "next": "next dev",
     "services:up": "docker compose -f ./infra/compose.yaml up -d",
-    "services:stop": "docker compost -f ./infra/compose.yaml stop",
+    "services:stop": "docker compose -f ./infra/compose.yaml stop",
     "migration:run": "node -r dotenv-expand/config infra/scripts/db-connection.js && node-pg-migrate up --envPath ./.env -m infra/migrations",
     "migration:create": "node-pg-migrate --migrations-dir ./infra/migrations create",
     "lint:check": "prettier --check .",
@@ -17,6 +17,7 @@
   "author": "Evandro de Souza Costa",
   "license": "MIT",
   "dependencies": {
+    "@auth/core": "^0.22.0",
     "@headlessui/react": "^1.7.17",
     "@heroicons/react": "^2.0.18",
     "bcryptjs": "^2.4.3",
