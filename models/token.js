@@ -41,21 +41,13 @@ export async function verifyTokenOnCookies(token) {
   return new Promise((resolve, reject) => {
     jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
       if (err) {
-        console.log(err)
         reject(new AppError({
-          message: 'The token is invalid',
+          message: err.message,
           statusCode: 403,
         }));
       } else {
-        console.log(decoded)
         resolve(decoded)
       }
     })
   });
 }
-
-// export async function findTokenAndValidateOnSession(request) {
-//   const accessToken = getTokenByCookie(request);
-//   const decodedToken = await verifyTokenOnCookies(accessToken);
-//   return decodedToken;
-// }

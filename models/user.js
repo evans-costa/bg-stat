@@ -1,4 +1,4 @@
-import * as database from '../infra/database.js';
+import database from '../infra/database.js';
 import bcryptjs from 'bcryptjs';
 import { AppError } from '../errors';
 

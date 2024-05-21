@@ -24,7 +24,7 @@ export default async function postHandler(request, response) {
       response,
     );
     
-    return response.status(201).json({ sessionObject });
+    return response.status(201).json({ refreshToken: sessionObject });
   } else {
     return response.status(405).end();
   }
