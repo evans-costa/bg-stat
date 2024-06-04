@@ -16,6 +16,8 @@ export async function comparePassword(userPasswordInput, passwordHash) {
       statusCode: 400,
     });
   }
+
+  return true;
 }
 
 export async function createSessionAndAccessToken(userId, response) {
@@ -23,5 +25,3 @@ export async function createSessionAndAccessToken(userId, response) {
   Token.createAccessToken(userId, response);
   return refreshToken;
 }
-
-
