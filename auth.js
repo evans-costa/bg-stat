@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth';
+import { authConfig } from 'auth.config';
 import Credentials from 'next-auth/providers/credentials';
 
 import { comparePassword } from './models/authentication';
@@ -6,27 +7,35 @@ import { findByEmail } from './models/user';
 
 import { InvalidLoginError } from './errors';
 
+async function getUser(email) {
+  try {
+    const user = await findByEmail(email);
+    return user;
+  } catch (error) {
+    console.error('Failed to fetch user: ', error);
+    throw error;
+  }
+}
+
 export const { handlers, signIn, signOut, auth } = NextAuth({
-  pages: {
-    signIn: '/',
-  },
+  ...authConfig,
   providers: [
     Credentials({
       credentials: {
         email: {
           label: 'email',
-          type: 'email',
         },
         password: {
-          label: 'password',
+          label: 'Password',
           type: 'password',
         },
       },
       authorize: async (credentials) => {
-        try {
-          let user = null;
-          user = await findByEmail(credentials.email);
+        const user = await getUser(credentials.email);
 
+        if (!user) return null;
+
+        try {
           const passwordMatch = await comparePassword(
             credentials.password,
             user.password,
@@ -36,6 +45,8 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         } catch (error) {
           throw new InvalidLoginError();
         }
+
+        return null;
       },
     }),
   ],
