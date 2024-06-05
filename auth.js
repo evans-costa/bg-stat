@@ -1,11 +1,11 @@
 import NextAuth from 'next-auth';
-import { authConfig } from 'auth.config';
+import { authConfig } from '@/auth.config';
 import Credentials from 'next-auth/providers/credentials';
 
-import { comparePassword } from './models/authentication';
-import { findByEmail } from './models/user';
+import { comparePassword } from '@/models/authentication';
+import { findByEmail } from '@/models/user';
 
-import { InvalidLoginError } from './errors';
+import { InvalidLoginError } from '@/errors';
 
 async function getUser(email) {
   try {
