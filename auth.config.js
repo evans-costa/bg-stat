@@ -1,3 +1,5 @@
+import { NextResponse } from 'next/server';
+
 export const authConfig = {
   pages: {
     signIn: '/',
@@ -6,11 +8,12 @@ export const authConfig = {
     authorized({ auth, request: { nextUrl } }) {
       const isLoggedIn = !!auth?.user;
       const isOnDashboard = nextUrl.pathname.startsWith('/boardgames');
+
       if (isOnDashboard) {
         if (isLoggedIn) return true;
         return false;
       } else if (isLoggedIn) {
-        return Response.redirect(new URL('/boardgames', nextUrl));
+        return NextResponse.redirect(new URL('/boardgames', nextUrl));
       }
       return true;
     },
