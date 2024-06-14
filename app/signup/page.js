@@ -1,13 +1,14 @@
-import Link from "next/link";
-import Layout from "../../interface/components/layout";
-import ErrorMessage from "../../interface/components/ErrorMessage";
-import LoadingSpin from "../../interface/components/LoadingSpin";
-import { useRef, useState } from "react";
-import { useRouter } from "next/router";
+'use client';
+
+import Link from 'next/link';
+import Layout from '../../interface/components/layout';
+import ErrorMessage from '../../interface/components/ErrorMessage';
+import LoadingSpin from '../../interface/components/LoadingSpin';
+import { useRef, useState } from 'react';
+import { useRouter } from 'next/navigation';
 
 export default function SignUp() {
   const router = useRouter();
-
   const usernameRef = useRef(null);
   const emailRef = useRef(null);
   const passwordRef = useRef(null);
@@ -30,10 +31,10 @@ export default function SignUp() {
     const password = passwordRef.current.value;
 
     try {
-      const response = await fetch("/api/users", {
-        method: "POST",
+      const response = await fetch('/api/users', {
+        method: 'POST',
         headers: {
-          "Content-Type": "application/json",
+          'Content-Type': 'application/json',
         },
         body: JSON.stringify({
           username: username,
@@ -45,7 +46,8 @@ export default function SignUp() {
       const responseBody = await response.json();
 
       if (response.status === 201) {
-        router.push("/");
+        router.refresh();
+        router.push('/');
         return;
       }
 
@@ -55,8 +57,8 @@ export default function SignUp() {
         return;
       }
     } catch (error) {
-      setError("It is not possible to create a user, please try again.");
-      console.error("Error while creating user.", error);
+      setError('It is not possible to create a user, please try again.');
+      console.error('Error while creating user.', error);
     } finally {
       setIsLoading(false);
     }
@@ -143,7 +145,7 @@ export default function SignUp() {
                     htmlFor="terms"
                     className="ml-2 text-sm font-medium text-slate-50"
                   >
-                    I agree with the{" "}
+                    I agree with the{' '}
                     <Link className="text-blue-500 font-semibold" href="#">
                       terms and conditions
                     </Link>
@@ -155,7 +157,7 @@ export default function SignUp() {
                 disabled={isLoading}
                 className="w-full my-4 rounded-lg p-2.5 bg-blue-700 text-base font-medium text-slate-50"
               >
-                {isLoading ? <LoadingSpin /> : "Register new account"}
+                {isLoading ? <LoadingSpin /> : 'Register new account'}
               </button>
             </form>
           </div>

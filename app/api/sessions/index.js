@@ -7,7 +7,6 @@ export default async function postHandler(request, response) {
 
     try {
       const data = request.body;
-
       userLogin = await User.findByEmail(data.email);
 
       await Authentication.comparePassword(data.password, userLogin.password);
@@ -19,12 +18,7 @@ export default async function postHandler(request, response) {
       }
     }
 
-    const sessionObject = await Authentication.createSessionAndAccessToken(
-      userLogin.id,
-      response,
-    );
-    
-    return response.status(201).json({ refreshToken: sessionObject });
+    return response.status(201).json();
   } else {
     return response.status(405).end();
   }
