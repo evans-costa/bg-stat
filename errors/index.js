@@ -9,5 +9,5 @@ export class AppError extends Error {
 }
 
 export class InvalidLoginError extends CredentialsSignin {
-  code = 'Usuário ou senha inválidos.';
+  code = 'Usuário e/ou senha inválidos.';
 }
