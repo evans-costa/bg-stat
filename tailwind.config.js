@@ -6,7 +6,11 @@ module.exports = {
     './interface/components/**/*.{js,ts,jsx,tsx,mdx}',
   ],
   theme: {
-    extend: {},
+    extend: {
+      backgroundImage: {
+        'signup-image': "url('/static/bg-signup1.jpg')",
+      },
+    },
   },
   plugins: [require('@tailwindcss/forms')],
 };
